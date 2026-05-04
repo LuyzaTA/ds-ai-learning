@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import 'katex/dist/katex.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-page:   #F8FAFC;
+    --bg-card:   #FFFFFF;
+    --text-main: #1E293B;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Focus ring for keyboard navigation */
+  :focus-visible {
+    outline: 2px solid #4A55E8;
+    outline-offset: 2px;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar        { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track  { background: #F1F5F9; }
+  ::-webkit-scrollbar-thumb  { background: #CBD5E1; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+}
+
+@layer components {
+  /* Prose overrides for lesson content */
+  .prose h2 {
+    @apply text-2xl font-bold text-slate-800 mt-10 mb-4;
+  }
+  .prose h3 {
+    @apply text-xl font-semibold text-slate-700 mt-7 mb-3;
+  }
+  .prose p {
+    @apply text-slate-700 leading-relaxed mb-4;
+  }
+  .prose ul {
+    @apply list-disc list-outside pl-5 space-y-1 mb-4;
+  }
+  .prose li {
+    @apply text-slate-700;
+  }
+  .prose strong {
+    @apply font-semibold text-slate-800;
+  }
+  .prose code:not(pre code) {
+    @apply bg-slate-100 text-slate-800 text-sm px-1.5 py-0.5 rounded font-mono;
+  }
+
+  /* KaTeX overrides */
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.5rem 0;
+  }
+}
