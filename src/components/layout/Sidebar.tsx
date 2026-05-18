@@ -5,9 +5,9 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { ChevronRight, CheckCircle2, BookOpen, X, FlaskConical } from 'lucide-react';
 import { clsx } from 'clsx';
-import { curriculum } from '@/data/curriculum';
 import { useProgressStore } from '@/store/progressStore';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { SectionColor } from '@/types/curriculum';
 import { COLOR_MAP } from '@/types/curriculum';
@@ -27,6 +27,8 @@ export function Sidebar() {
   const pathname = usePathname();
   const { completedLessons, sidebarOpen, toggleSidebar } = useProgressStore();
   const t = useTranslation();
+  const { sections: getSections } = useLocalizedCurriculum();
+  const sections = getSections();
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['foundations']));
 
   const toggleSection = (id: string) => {
@@ -92,7 +94,7 @@ export function Sidebar() {
           <div className="mx-3 my-2 border-t border-slate-100" />
           <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">{t.nav.curriculum}</p>
 
-          {curriculum.sections.map((section) => {
+          {sections.map((section) => {
             const sectionLessons = section.modules.flatMap((m) => m.lessons);
             const completed = sectionLessons.filter((l) => completedLessons.includes(l.id)).length;
             const total     = sectionLessons.length;
@@ -183,7 +185,7 @@ export function Sidebar() {
           </div>
           <ProgressBar
             value={completedLessons.length}
-            max={curriculum.sections.flatMap((s) => s.modules.flatMap((m) => m.lessons)).length}
+            max={sections.flatMap((s) => s.modules.flatMap((m) => m.lessons)).length}
             color="emerald"
           />
         </div>

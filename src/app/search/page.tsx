@@ -3,15 +3,16 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Search, BookOpen } from 'lucide-react';
-import { getAllLessons } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { Badge } from '@/components/ui/Badge';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 import type { FlatLesson } from '@/types/curriculum';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
   const t = useTranslation();
+  const { getAllLessons } = useLocalizedCurriculum();
   const allLessons = getAllLessons();
 
   const results = useMemo<FlatLesson[]>(() => {

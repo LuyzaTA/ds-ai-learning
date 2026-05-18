@@ -1,9 +1,11 @@
+'use client';
+
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getSectionById, getModuleById } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowRight, Clock } from 'lucide-react';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 
 interface Props {
   params: { sectionId: string; moduleId: string };
@@ -16,6 +18,7 @@ const DIFFICULTY_COLORS = {
 } as const;
 
 export default function ModulePage({ params }: Props) {
+  const { getSectionById, getModuleById } = useLocalizedCurriculum();
   const section = getSectionById(params.sectionId);
   const module  = getModuleById(params.sectionId, params.moduleId);
   if (!section || !module) notFound();

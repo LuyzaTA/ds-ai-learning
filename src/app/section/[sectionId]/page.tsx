@@ -2,10 +2,10 @@
 
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getSectionById } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { Badge } from '@/components/ui/Badge';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 import { ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { clsx } from 'clsx';
 import type { SectionColor } from '@/types/curriculum';
@@ -22,6 +22,7 @@ const DIFFICULTY_COLORS = {
 } as const;
 
 export default function SectionPage({ params }: Props) {
+  const { getSectionById } = useLocalizedCurriculum();
   const section = getSectionById(params.sectionId);
   if (!section) notFound();
 

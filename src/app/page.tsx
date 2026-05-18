@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useProgressStore } from '@/store/progressStore';
-import { curriculum, getLessonCount } from '@/data/curriculum';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 import { Header } from '@/components/layout/Header';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Badge } from '@/components/ui/Badge';
@@ -36,7 +36,9 @@ const ICON_COLORS: Record<SectionColor, string> = {
 export default function HomePage() {
   const { completedLessons } = useProgressStore();
   const t = useTranslation();
-  const totalLessons = getLessonCount();
+  const { sections: getSections, getAllLessons } = useLocalizedCurriculum();
+  const sections     = getSections();
+  const totalLessons = getAllLessons().length;
   const overallPct   = totalLessons > 0 ? (completedLessons.length / totalLessons) * 100 : 0;
 
   return (
@@ -97,7 +99,7 @@ export default function HomePage() {
         <div>
           <h2 className="text-xl font-bold text-slate-800 mb-6">{t.home.curriculum}</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
-            {curriculum.sections.map((section, idx) => {
+            {sections.map((section, idx) => {
               const sectionLessons = section.modules.flatMap((m) => m.lessons);
               const done  = sectionLessons.filter((l) => completedLessons.includes(l.id)).length;
               const total = sectionLessons.length;

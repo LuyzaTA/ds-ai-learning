@@ -3,9 +3,9 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { useEffect } from 'react';
-import { getSectionById, getLessonById, getAdjacentLessons } from '@/data/curriculum';
 import { useProgressStore } from '@/store/progressStore';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useLocalizedCurriculum } from '@/hooks/useLocalizedCurriculum';
 import { Header } from '@/components/layout/Header';
 import { LessonContent } from '@/components/content/LessonContent';
 import { Badge } from '@/components/ui/Badge';
@@ -22,6 +22,7 @@ const DIFFICULTY_COLORS = { beginner: 'emerald', intermediate: 'amber', advanced
 
 export default function LessonPage({ params }: Props) {
   const { sectionId, moduleId, lessonId } = params;
+  const { getSectionById, getLessonById, getAdjacentLessons } = useLocalizedCurriculum();
   const section = getSectionById(sectionId);
   const lesson  = getLessonById(sectionId, moduleId, lessonId);
   if (!section || !lesson) notFound();
