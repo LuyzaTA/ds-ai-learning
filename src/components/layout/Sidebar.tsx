@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { ChevronRight, CheckCircle2, BookOpen, X } from 'lucide-react';
+import { ChevronRight, CheckCircle2, BookOpen, X, FlaskConical } from 'lucide-react';
 import { clsx } from 'clsx';
 import { curriculum } from '@/data/curriculum';
 import { useProgressStore } from '@/store/progressStore';
@@ -69,6 +69,27 @@ export function Sidebar() {
 
         {/* Sections list */}
         <nav className="flex-1 overflow-y-auto py-3 px-2">
+          {/* Hands-On link */}
+          <Link
+            href="/hands-on"
+            className={clsx(
+              'flex items-center gap-2.5 px-3 py-2.5 rounded-xl mb-1 transition-colors',
+              pathname?.startsWith('/hands-on')
+                ? 'bg-violet-50 text-violet-700'
+                : 'hover:bg-slate-50 text-slate-700'
+            )}
+          >
+            <FlaskConical className={clsx('w-5 h-5', pathname?.startsWith('/hands-on') ? 'text-violet-600' : 'text-slate-500')} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold truncate">Hands-On</p>
+              <p className="text-xs text-slate-400">Interactive Notebooks</p>
+            </div>
+            <span className="text-xs bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded-full font-semibold">NEW</span>
+          </Link>
+
+          <div className="mx-3 my-2 border-t border-slate-100" />
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Curriculum</p>
+
           {curriculum.sections.map((section) => {
             const sectionLessons = section.modules.flatMap((m) => m.lessons);
             const completed = sectionLessons.filter((l) => completedLessons.includes(l.id)).length;

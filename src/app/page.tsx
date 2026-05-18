@@ -6,7 +6,7 @@ import { curriculum, getLessonCount } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Badge } from '@/components/ui/Badge';
-import { ArrowRight, BookOpen, CheckCircle2, Clock, Layers, Trophy } from 'lucide-react';
+import { ArrowRight, BookOpen, CheckCircle2, Clock, Layers, Trophy, FlaskConical, Zap } from 'lucide-react';
 import { clsx } from 'clsx';
 import type { SectionColor } from '@/types/curriculum';
 
@@ -147,8 +147,31 @@ export default function HomePage() {
           </div>
         </div>
 
+        {/* Hands-On Banner */}
+        <div className="mt-10 rounded-2xl bg-gradient-to-r from-violet-600 to-brand-600 text-white p-8">
+          <div className="flex items-start justify-between gap-6">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
+                <Zap className="w-3 h-3" /> New Feature
+              </div>
+              <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
+                <FlaskConical className="w-5 h-5" /> Hands-On Notebooks
+              </h2>
+              <p className="text-violet-100 text-sm leading-relaxed max-w-xl">
+                Learn every algorithm through interactive, Colab-style notebooks. Code, math, charts, business cases, and quizzes — all in one place.
+              </p>
+            </div>
+            <Link
+              href="/hands-on"
+              className="shrink-0 inline-flex items-center gap-2 bg-white text-violet-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-violet-50 transition-colors text-sm"
+            >
+              Explore Notebooks <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
         {/* Quick start */}
-        <div className="mt-12 rounded-2xl bg-brand-600 text-white p-8 text-center">
+        <div className="mt-6 rounded-2xl bg-brand-600 text-white p-8 text-center">
           <h2 className="text-2xl font-bold mb-2">Ready to start learning?</h2>
           <p className="text-brand-100 mb-6">Begin with the Foundations — or jump straight into any topic that interests you.</p>
           <Link
