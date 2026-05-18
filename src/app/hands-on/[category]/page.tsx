@@ -7,6 +7,7 @@ import { clsx } from 'clsx';
 import { Header } from '@/components/layout/Header';
 import { getCategoryById, notebookCategories } from '@/data/notebooks';
 import { useNotebookStore } from '@/store/notebookStore';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { NotebookCategoryId, Difficulty } from '@/types/notebook';
 
 const DIFFICULTY_STYLES: Record<Difficulty, string> = {
@@ -51,6 +52,7 @@ export default function CategoryPage({ params }: PageProps) {
   if (!category) notFound();
 
   const { completedNotebooks, bookmarkedNotebooks } = useNotebookStore();
+  const t = useTranslation();
   const completedCount = category.notebooks.filter(n => completedNotebooks.includes(n.id)).length;
 
   return (
@@ -75,11 +77,11 @@ export default function CategoryPage({ params }: PageProps) {
               </h1>
               <p className="text-slate-700 text-base leading-relaxed max-w-2xl">{category.description}</p>
               <div className="flex items-center gap-4 mt-4 text-sm text-slate-600">
-                <span>{category.notebooks.length} notebooks</span>
+                <span>{category.notebooks.length} {t.handsOn.category.notebooks}</span>
                 <span>•</span>
-                <span>{completedCount} completed</span>
+                <span>{completedCount} {t.handsOn.category.completed}</span>
                 <span>•</span>
-                <span>{category.notebooks.reduce((s,n) => s + n.estimatedMinutes, 0)} min total</span>
+                <span>{category.notebooks.reduce((s,n) => s + n.estimatedMinutes, 0)} {t.handsOn.category.minTotal}</span>
               </div>
             </div>
           </div>
@@ -130,7 +132,7 @@ export default function CategoryPage({ params }: PageProps) {
                     {nb.estimatedMinutes} min
                   </div>
                   <div className={clsx('flex items-center gap-1 font-medium group-hover:gap-1.5 transition-all', CAT_TEXT[category.id])}>
-                    Open <ArrowRight className="w-3 h-3" />
+                    {t.handsOn.category.open} <ArrowRight className="w-3 h-3" />
                   </div>
                 </div>
               </Link>
@@ -140,7 +142,7 @@ export default function CategoryPage({ params }: PageProps) {
 
         {/* Other categories quick nav */}
         <div className="mt-12">
-          <h2 className="text-lg font-bold text-slate-800 mb-4">Other Categories</h2>
+          <h2 className="text-lg font-bold text-slate-800 mb-4">{t.handsOn.category.otherCategories}</h2>
           <div className="flex flex-wrap gap-3">
             {notebookCategories.filter(c => c.id !== category.id).map(c => (
               <Link

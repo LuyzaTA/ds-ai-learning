@@ -6,6 +6,7 @@ import { clsx } from 'clsx';
 import { Header } from '@/components/layout/Header';
 import { notebookCategories, getTotalNotebookCount } from '@/data/notebooks';
 import { useNotebookStore } from '@/store/notebookStore';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { NotebookCategoryId } from '@/types/notebook';
 
 const CAT_GRADIENTS: Record<NotebookCategoryId, string> = {
@@ -37,14 +38,15 @@ const CAT_TEXT: Record<NotebookCategoryId, string> = {
 
 export default function HandsOnPage() {
   const { completedNotebooks } = useNotebookStore();
+  const t = useTranslation();
   const total = getTotalNotebookCount();
   const done  = completedNotebooks.length;
 
   const featuredNotebooks = [
-    { id: 'linear-regression',  category: 'machine-learning' as NotebookCategoryId, label: '⭐ Best Starter' },
-    { id: 'neural-networks',    category: 'deep-learning'    as NotebookCategoryId, label: '🔥 Most Popular' },
-    { id: 'llm-basics',         category: 'generative-ai'    as NotebookCategoryId, label: '✨ Hot Topic' },
-    { id: 'transformer',        category: 'deep-learning'    as NotebookCategoryId, label: '🚀 Core Foundation' },
+    { id: 'linear-regression',  category: 'machine-learning' as NotebookCategoryId, label: t.handsOn.landing.labels.bestStarter },
+    { id: 'neural-networks',    category: 'deep-learning'    as NotebookCategoryId, label: t.handsOn.landing.labels.mostPopular },
+    { id: 'llm-basics',         category: 'generative-ai'    as NotebookCategoryId, label: t.handsOn.landing.labels.hotTopic },
+    { id: 'transformer',        category: 'deep-learning'    as NotebookCategoryId, label: t.handsOn.landing.labels.coreFoundation },
   ];
 
   return (
@@ -56,15 +58,14 @@ export default function HandsOnPage() {
         <div className="mb-12">
           <div className="inline-flex items-center gap-2 bg-violet-100 text-violet-700 text-xs font-semibold px-3 py-1.5 rounded-full mb-4">
             <Zap className="w-3.5 h-3.5" />
-            Interactive Notebooks
+            {t.handsOn.landing.badge}
           </div>
           <h1 className="text-4xl font-extrabold text-slate-800 mb-4 leading-tight">
-            Hands-On Learning<br />
-            <span className="text-brand-600">Code. Visualize. Understand.</span>
+            {t.handsOn.landing.title}<br />
+            <span className="text-brand-600">{t.handsOn.landing.subtitle}</span>
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">
-            Learn algorithms through interactive notebooks — Google Colab style.
-            Every algorithm includes theory, math, code, visualizations, business cases, and quizzes.
+            {t.handsOn.landing.desc}
           </p>
 
           {/* Progress bar */}
@@ -73,7 +74,7 @@ export default function HandsOnPage() {
               <div className="flex items-center justify-between text-xs text-slate-600 mb-2">
                 <div className="flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className="font-semibold">{done} notebooks completed</span>
+                  <span className="font-semibold">{t.handsOn.landing.notebooksCompleted(done)}</span>
                 </div>
                 <span className="text-slate-400">{done}/{total}</span>
               </div>
@@ -90,10 +91,10 @@ export default function HandsOnPage() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
           {[
-            { icon: <BookOpen className="w-5 h-5" />, value: String(total), label: 'Notebooks', color: 'text-brand-600' },
-            { icon: <Star className="w-5 h-5" />,     value: '6',          label: 'Categories', color: 'text-violet-600' },
-            { icon: <Clock className="w-5 h-5" />,    value: '30+',        label: 'Hours', color: 'text-amber-600' },
-            { icon: <Zap className="w-5 h-5" />,      value: '100+',       label: 'Code Examples', color: 'text-emerald-600' },
+            { icon: <BookOpen className="w-5 h-5" />, value: String(total), label: t.handsOn.landing.stats.notebooks, color: 'text-brand-600' },
+            { icon: <Star className="w-5 h-5" />,     value: '6',          label: t.handsOn.landing.stats.categories, color: 'text-violet-600' },
+            { icon: <Clock className="w-5 h-5" />,    value: '30+',        label: t.handsOn.landing.stats.hours, color: 'text-amber-600' },
+            { icon: <Zap className="w-5 h-5" />,      value: '100+',       label: t.handsOn.landing.stats.codeExamples, color: 'text-emerald-600' },
           ].map(stat => (
             <div key={stat.label} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-soft text-center">
               <div className={clsx('flex justify-center mb-2', stat.color)}>{stat.icon}</div>
@@ -105,7 +106,7 @@ export default function HandsOnPage() {
 
         {/* Featured Notebooks */}
         <div className="mb-12">
-          <h2 className="text-xl font-bold text-slate-800 mb-5">Featured Notebooks</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-5">{t.handsOn.landing.featured}</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {featuredNotebooks.map(({ id, category, label }) => {
               const cat = notebookCategories.find(c => c.id === category);
@@ -147,7 +148,7 @@ export default function HandsOnPage() {
 
         {/* Categories Grid */}
         <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-6">All Categories</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-6">{t.handsOn.landing.allCategories}</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {notebookCategories.map(cat => {
               const completedInCat = cat.notebooks.filter(n => completedNotebooks.includes(n.id)).length;
@@ -169,7 +170,7 @@ export default function HandsOnPage() {
                       {cat.icon}
                     </div>
                     <span className={clsx('text-xs font-semibold', CAT_TEXT[cat.id])}>
-                      {totalInCat} notebooks
+                      {t.handsOn.landing.notebooksCount(totalInCat)}
                     </span>
                   </div>
 
@@ -181,9 +182,9 @@ export default function HandsOnPage() {
                   <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
-                      {Math.round(totalMinutes / 60)}h total
+                      {t.handsOn.landing.totalHours(Math.round(totalMinutes / 60))}
                     </div>
-                    <span>{completedInCat}/{totalInCat} done</span>
+                    <span>{completedInCat}/{totalInCat} {t.common.done}</span>
                   </div>
 
                   {/* Progress */}
@@ -195,7 +196,7 @@ export default function HandsOnPage() {
                   </div>
 
                   <div className={clsx('flex items-center gap-1 text-xs font-medium group-hover:gap-2 transition-all', CAT_TEXT[cat.id])}>
-                    Explore category <ArrowRight className="w-3.5 h-3.5" />
+                    {t.handsOn.landing.exploreCategory} <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </Link>
               );
@@ -205,15 +206,15 @@ export default function HandsOnPage() {
 
         {/* CTA */}
         <div className="mt-12 rounded-2xl bg-gradient-to-r from-violet-600 to-brand-600 text-white p-8 text-center">
-          <h2 className="text-2xl font-bold mb-2">Start with the basics</h2>
+          <h2 className="text-2xl font-bold mb-2">{t.handsOn.landing.ctaTitle}</h2>
           <p className="text-violet-100 mb-6 max-w-lg mx-auto">
-            New to ML? Start with Linear Regression — it explains the core ideas behind almost every algorithm.
+            {t.handsOn.landing.ctaDesc}
           </p>
           <Link
             href="/hands-on/machine-learning/linear-regression"
             className="inline-flex items-center gap-2 bg-white text-violet-700 font-semibold px-6 py-3 rounded-xl hover:bg-violet-50 transition-colors"
           >
-            Open Linear Regression notebook <ArrowRight className="w-4 h-4" />
+            {t.handsOn.landing.ctaButton} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>

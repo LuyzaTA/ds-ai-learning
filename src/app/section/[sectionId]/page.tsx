@@ -1,8 +1,11 @@
+'use client';
+
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getSectionById } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslation } from '@/hooks/useTranslation';
 import { ArrowRight, BookOpen, Clock } from 'lucide-react';
 import { clsx } from 'clsx';
 import type { SectionColor } from '@/types/curriculum';
@@ -22,6 +25,7 @@ export default function SectionPage({ params }: Props) {
   const section = getSectionById(params.sectionId);
   if (!section) notFound();
 
+  const t = useTranslation();
   const allLessons = section.modules.flatMap((m) => m.lessons);
   const colors = COLOR_MAP[section.color];
 
@@ -50,9 +54,9 @@ export default function SectionPage({ params }: Props) {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-slate-200/60">
             {[
-              { icon: <BookOpen className="w-4 h-4" />, value: section.modules.length, label: 'Modules' },
-              { icon: <BookOpen className="w-4 h-4" />, value: allLessons.length, label: 'Lessons' },
-              { icon: <Clock className="w-4 h-4" />, value: `${allLessons.reduce((acc, l) => acc + parseInt(l.duration), 0)} min`, label: 'Est. Time' },
+              { icon: <BookOpen className="w-4 h-4" />, value: section.modules.length, label: t.section.modules },
+              { icon: <BookOpen className="w-4 h-4" />, value: allLessons.length, label: t.section.lessons },
+              { icon: <Clock className="w-4 h-4" />, value: `${allLessons.reduce((acc, l) => acc + parseInt(l.duration), 0)} min`, label: t.section.estTime },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className={clsx('flex justify-center mb-1', colors.text)}>{stat.icon}</div>
@@ -102,7 +106,7 @@ export default function SectionPage({ params }: Props) {
                     </div>
                     <div className="flex items-center gap-3 shrink-0">
                       <Badge variant={DIFFICULTY_COLORS[lesson.difficulty]} size="sm">
-                        {lesson.difficulty}
+                        {t.difficulty[lesson.difficulty]}
                       </Badge>
                       <span className="text-xs text-slate-400 flex items-center gap-1">
                         <Clock className="w-3 h-3" />
@@ -119,9 +123,4 @@ export default function SectionPage({ params }: Props) {
       </div>
     </div>
   );
-}
-
-export function generateStaticParams() {
-  const { curriculum } = require('@/data/curriculum');
-  return curriculum.sections.map((s: any) => ({ sectionId: s.id }));
 }

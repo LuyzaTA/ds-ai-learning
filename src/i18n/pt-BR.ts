@@ -1,0 +1,163 @@
+import type { Translations } from './en';
+
+const ptBR: Translations = {
+  common: {
+    minutes: 'min',
+    done: 'feito',
+    completed: 'concluído',
+    previous: 'Anterior',
+    next: 'Próximo',
+    open: 'Abrir',
+    new: 'NOVO',
+  },
+  nav: {
+    handsOn: 'Prática',
+    interactiveNotebooks: 'Notebooks Interativos',
+    curriculum: 'Currículo',
+    overallProgress: 'Progresso Geral',
+    lessonsCompleted: (n: number) => `${n} concluída${n !== 1 ? 's' : ''}`,
+    lessonsCount: (done: number, total: number) => `${done}/${total} aulas`,
+  },
+  header: {
+    toggleSidebar: 'Alternar barra lateral',
+    simpleMode: 'Simples',
+    detailedMode: 'Detalhado',
+    switchToDetailed: 'Mudar para modo detalhado',
+    switchToSimple: 'Mudar para modo simples',
+    search: 'Pesquisar',
+  },
+  home: {
+    badge: 'MBA Data Science & IA',
+    badgeSections: (n: number) => `8 Seções · ${n} Aulas`,
+    title: 'Domine Data Science &\nInteligência Artificial',
+    subtitle:
+      'Uma plataforma de aprendizado completa e estruturada baseada no currículo do seu MBA. De fundamentos matemáticos a sistemas de IA em produção — traduzido, expandido e visualizado.',
+    yourProgress: 'Seu Progresso',
+    lessonsComplete: (done: number, total: number) => `${done} de ${total} aulas concluídas`,
+    stats: {
+      sections: 'Seções',
+      lessons: 'Aulas',
+      completed: 'Concluídas',
+      hours: 'Horas',
+    },
+    curriculum: 'Currículo',
+    modules: 'módulos',
+    lessons: 'aulas',
+    viewSection: 'Ver seção',
+    handsOnBanner: {
+      badge: 'Nova Funcionalidade',
+      title: 'Notebooks Interativos',
+      desc: 'Aprenda cada algoritmo com notebooks interativos no estilo Colab. Código, matemática, gráficos, casos de negócio e quizzes — tudo em um só lugar.',
+      cta: 'Explorar Notebooks',
+    },
+    cta: {
+      title: 'Pronto para começar?',
+      desc: 'Comece pelos Fundamentos — ou vá direto para qualquer tema que te interessa.',
+      button: 'Começar pelos Fundamentos',
+    },
+  },
+  search: {
+    breadcrumb: 'Pesquisa',
+    title: 'Pesquisar Aulas',
+    placeholder: 'Pesquise aulas, tópicos, algoritmos...',
+    noResults: 'Nenhum resultado encontrado.',
+    results: (n: number) => `${n} resultado${n !== 1 ? 's' : ''} encontrado${n !== 1 ? 's' : ''}`,
+    hint: 'Digite ao menos 2 caracteres para pesquisar',
+  },
+  notFound: {
+    title: 'Página não encontrada',
+    desc: 'Esta aula ou seção ainda não existe. Verifique a barra lateral para o conteúdo disponível.',
+    button: 'Voltar ao Início',
+  },
+  section: {
+    modules: 'Módulos',
+    lessons: 'Aulas',
+    estTime: 'Tempo Est.',
+  },
+  lesson: {
+    prereqs: 'Pré-requisitos:',
+    simpleMode: 'Modo simples ativado — alguns conteúdos avançados podem estar resumidos.',
+    markComplete: 'Marcar como Concluída',
+    markIncomplete: 'Marcar como Não Concluída',
+    previous: 'Anterior',
+    next: 'Próxima',
+  },
+  difficulty: {
+    beginner: 'iniciante',
+    intermediate: 'intermediário',
+    advanced: 'avançado',
+  },
+  handsOn: {
+    landing: {
+      badge: 'Notebooks Interativos',
+      title: 'Aprendizado Prático',
+      subtitle: 'Codifique. Visualize. Entenda.',
+      desc: 'Aprenda algoritmos com notebooks interativos no estilo Google Colab. Cada algoritmo inclui teoria, matemática, código, visualizações, casos de negócio e quizzes.',
+      notebooksCompleted: (n: number) =>
+        `${n} notebook${n !== 1 ? 's' : ''} concluído${n !== 1 ? 's' : ''}`,
+      stats: {
+        notebooks: 'Notebooks',
+        categories: 'Categorias',
+        hours: 'Horas',
+        codeExamples: 'Exemplos de Código',
+      },
+      featured: 'Notebooks em Destaque',
+      labels: {
+        bestStarter: '⭐ Melhor Início',
+        mostPopular: '🔥 Mais Popular',
+        hotTopic: '✨ Muito Buscado',
+        coreFoundation: '🚀 Base Essencial',
+      },
+      allCategories: 'Todas as Categorias',
+      exploreCategory: 'Explorar categoria',
+      notebooksCount: (n: number) => `${n} notebooks`,
+      totalHours: (h: number) => `${h}h no total`,
+      ctaTitle: 'Comece pelo básico',
+      ctaDesc:
+        'Novo em ML? Comece com Regressão Linear — ela explica as ideias centrais por trás de quase todo algoritmo.',
+      ctaButton: 'Abrir notebook de Regressão Linear',
+    },
+    category: {
+      notebooks: 'notebooks',
+      completed: 'concluídos',
+      minTotal: 'min no total',
+      otherCategories: 'Outras Categorias',
+      open: 'Abrir',
+    },
+    notebook: {
+      backTo: (title: string) => `Voltar para ${title}`,
+      markComplete: 'Concluir',
+      completed: 'Concluído',
+      prerequisites: 'Pré-requisitos:',
+      notebookComplete: 'Notebook Concluído! 🎉',
+      notebookCompletedDesc:
+        'Ótimo trabalho. Vá para o próximo notebook ou explore tópicos relacionados.',
+      doneQuestion: 'Terminou este notebook?',
+      markAsComplete: 'Marcar como Concluído',
+      previous: 'Anterior',
+      next: 'Próximo',
+      relatedNotebooks: 'Notebooks Relacionados',
+    },
+  },
+  cells: {
+    code: {
+      copy: 'Copiar código',
+      run: 'Executar',
+      running: 'Executando...',
+      executing: 'Processando...',
+      output: 'Saída',
+    },
+    quiz: {
+      knowledgeCheck: 'Verificação de Conhecimento',
+      questions: 'questões',
+      correct: 'corretas',
+      checkAnswer: 'Verificar Resposta',
+      tryAgain: 'Tentar Novamente',
+      explanation: 'Explicação',
+      correctFeedback: '✓ Correto! ',
+      incorrectFeedback: '✗ Não exatamente. ',
+    },
+  },
+};
+
+export default ptBR;

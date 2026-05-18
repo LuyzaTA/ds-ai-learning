@@ -8,6 +8,7 @@ import { ProgressBar } from '@/components/ui/ProgressBar';
 import { Badge } from '@/components/ui/Badge';
 import { ArrowRight, BookOpen, CheckCircle2, Clock, Layers, Trophy, FlaskConical, Zap } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { SectionColor } from '@/types/curriculum';
 
 const BG_COLORS: Record<SectionColor, string> = {
@@ -34,6 +35,7 @@ const ICON_COLORS: Record<SectionColor, string> = {
 
 export default function HomePage() {
   const { completedLessons } = useProgressStore();
+  const t = useTranslation();
   const totalLessons = getLessonCount();
   const overallPct   = totalLessons > 0 ? (completedLessons.length / totalLessons) * 100 : 0;
 
@@ -45,15 +47,16 @@ export default function HomePage() {
         {/* Hero */}
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-4">
-            <Badge variant="blue">MBA Data Science & AI</Badge>
-            <Badge variant="emerald">8 Sections · {totalLessons} Lessons</Badge>
+            <Badge variant="blue">{t.home.badge}</Badge>
+            <Badge variant="emerald">{t.home.badgeSections(totalLessons)}</Badge>
           </div>
           <h1 className="text-4xl font-extrabold text-slate-800 mb-4 leading-tight">
-            Master Data Science &<br />Artificial Intelligence
+            {t.home.title.split('\n').map((line, i) => (
+              <span key={i}>{i > 0 && <br />}{line}</span>
+            ))}
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl leading-relaxed">
-            A complete, structured learning platform built from your MBA curriculum.
-            From mathematical foundations to production AI systems — translated, expanded, and made visual.
+            {t.home.subtitle}
           </p>
 
           {/* Overall Progress */}
@@ -61,12 +64,12 @@ export default function HomePage() {
             <div className="mt-6 bg-white rounded-2xl border border-slate-200 p-5 max-w-md shadow-soft">
               <div className="flex items-center gap-2 mb-3">
                 <Trophy className="w-4 h-4 text-amber-500" />
-                <span className="text-sm font-semibold text-slate-700">Your Progress</span>
+                <span className="text-sm font-semibold text-slate-700">{t.home.yourProgress}</span>
               </div>
               <ProgressBar
                 value={completedLessons.length}
                 max={totalLessons}
-                label={`${completedLessons.length} of ${totalLessons} lessons complete`}
+                label={t.home.lessonsComplete(completedLessons.length, totalLessons)}
                 showPercent
                 color="emerald"
               />
@@ -77,10 +80,10 @@ export default function HomePage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
           {[
-            { icon: <Layers className="w-5 h-5" />, value: '8', label: 'Sections', color: 'text-brand-600' },
-            { icon: <BookOpen className="w-5 h-5" />, value: String(totalLessons), label: 'Lessons', color: 'text-violet-600' },
-            { icon: <CheckCircle2 className="w-5 h-5" />, value: String(completedLessons.length), label: 'Completed', color: 'text-emerald-600' },
-            { icon: <Clock className="w-5 h-5" />, value: '40+', label: 'Hours', color: 'text-amber-600' },
+            { icon: <Layers className="w-5 h-5" />, value: '8', label: t.home.stats.sections, color: 'text-brand-600' },
+            { icon: <BookOpen className="w-5 h-5" />, value: String(totalLessons), label: t.home.stats.lessons, color: 'text-violet-600' },
+            { icon: <CheckCircle2 className="w-5 h-5" />, value: String(completedLessons.length), label: t.home.stats.completed, color: 'text-emerald-600' },
+            { icon: <Clock className="w-5 h-5" />, value: '40+', label: t.home.stats.hours, color: 'text-amber-600' },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl border border-slate-200 p-4 shadow-soft text-center">
               <div className={clsx('flex justify-center mb-2', stat.color)}>{stat.icon}</div>
@@ -92,7 +95,7 @@ export default function HomePage() {
 
         {/* Sections Grid */}
         <div>
-          <h2 className="text-xl font-bold text-slate-800 mb-6">Curriculum</h2>
+          <h2 className="text-xl font-bold text-slate-800 mb-6">{t.home.curriculum}</h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
             {curriculum.sections.map((section, idx) => {
               const sectionLessons = section.modules.flatMap((m) => m.lessons);
@@ -133,13 +136,13 @@ export default function HomePage() {
 
                   {/* Progress + stats */}
                   <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-                    <span>{section.modules.length} modules · {total} lessons</span>
-                    <span>{done}/{total} done</span>
+                    <span>{section.modules.length} {t.home.modules} · {total} {t.home.lessons}</span>
+                    <span>{done}/{total} {t.common.done}</span>
                   </div>
                   <ProgressBar value={pct} size="sm" color="blue" />
 
                   <div className="flex items-center gap-1 mt-3 text-xs font-medium text-slate-600 group-hover:text-brand-600 transition-colors">
-                    View section <ArrowRight className="w-3.5 h-3.5" />
+                    {t.home.viewSection} <ArrowRight className="w-3.5 h-3.5" />
                   </div>
                 </Link>
               );
@@ -152,33 +155,33 @@ export default function HomePage() {
           <div className="flex items-start justify-between gap-6">
             <div className="flex-1">
               <div className="inline-flex items-center gap-2 bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                <Zap className="w-3 h-3" /> New Feature
+                <Zap className="w-3 h-3" /> {t.home.handsOnBanner.badge}
               </div>
               <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
-                <FlaskConical className="w-5 h-5" /> Hands-On Notebooks
+                <FlaskConical className="w-5 h-5" /> {t.home.handsOnBanner.title}
               </h2>
               <p className="text-violet-100 text-sm leading-relaxed max-w-xl">
-                Learn every algorithm through interactive, Colab-style notebooks. Code, math, charts, business cases, and quizzes — all in one place.
+                {t.home.handsOnBanner.desc}
               </p>
             </div>
             <Link
               href="/hands-on"
               className="shrink-0 inline-flex items-center gap-2 bg-white text-violet-700 font-semibold px-5 py-2.5 rounded-xl hover:bg-violet-50 transition-colors text-sm"
             >
-              Explore Notebooks <ArrowRight className="w-4 h-4" />
+              {t.home.handsOnBanner.cta} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
 
         {/* Quick start */}
         <div className="mt-6 rounded-2xl bg-brand-600 text-white p-8 text-center">
-          <h2 className="text-2xl font-bold mb-2">Ready to start learning?</h2>
-          <p className="text-brand-100 mb-6">Begin with the Foundations — or jump straight into any topic that interests you.</p>
+          <h2 className="text-2xl font-bold mb-2">{t.home.cta.title}</h2>
+          <p className="text-brand-100 mb-6">{t.home.cta.desc}</p>
           <Link
             href="/section/foundations"
             className="inline-flex items-center gap-2 bg-white text-brand-700 font-semibold px-6 py-3 rounded-xl hover:bg-brand-50 transition-colors"
           >
-            Start with Foundations <ArrowRight className="w-4 h-4" />
+            {t.home.cta.button} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>

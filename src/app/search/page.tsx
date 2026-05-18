@@ -6,10 +6,12 @@ import { Search, BookOpen } from 'lucide-react';
 import { getAllLessons } from '@/data/curriculum';
 import { Header } from '@/components/layout/Header';
 import { Badge } from '@/components/ui/Badge';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { FlatLesson } from '@/types/curriculum';
 
 export default function SearchPage() {
   const [query, setQuery] = useState('');
+  const t = useTranslation();
   const allLessons = getAllLessons();
 
   const results = useMemo<FlatLesson[]>(() => {
@@ -31,10 +33,10 @@ export default function SearchPage() {
 
   return (
     <div>
-      <Header breadcrumb={[{ label: 'Search' }]} />
+      <Header breadcrumb={[{ label: t.search.breadcrumb }]} />
 
       <div className="px-6 py-10 max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold text-slate-800 mb-6">Search Lessons</h1>
+        <h1 className="text-2xl font-bold text-slate-800 mb-6">{t.search.title}</h1>
 
         {/* Search input */}
         <div className="relative mb-8">
@@ -44,7 +46,7 @@ export default function SearchPage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search lessons, topics, algorithms..."
+            placeholder={t.search.placeholder}
             className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-brand-400 shadow-soft text-base"
           />
         </div>
@@ -53,7 +55,7 @@ export default function SearchPage() {
         {query.length >= 2 && (
           <div>
             <p className="text-sm text-slate-500 mb-4">
-              {results.length === 0 ? 'No results found.' : `${results.length} result${results.length !== 1 ? 's' : ''} found`}
+              {results.length === 0 ? t.search.noResults : t.search.results(results.length)}
             </p>
             <div className="space-y-3">
               {results.map((fl) => (
@@ -85,7 +87,7 @@ export default function SearchPage() {
         {query.length < 2 && (
           <div className="text-center py-12 text-slate-400">
             <Search className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p>Type at least 2 characters to search</p>
+            <p>{t.search.hint}</p>
           </div>
         )}
       </div>

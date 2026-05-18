@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { getSectionById, getLessonById, getAdjacentLessons } from '@/data/curriculum';
 import { useProgressStore } from '@/store/progressStore';
+import { useTranslation } from '@/hooks/useTranslation';
 import { Header } from '@/components/layout/Header';
 import { LessonContent } from '@/components/content/LessonContent';
 import { Badge } from '@/components/ui/Badge';
@@ -26,6 +27,7 @@ export default function LessonPage({ params }: Props) {
   if (!section || !lesson) notFound();
 
   const { markComplete, markIncomplete, isComplete, setLastVisited, detailMode } = useProgressStore();
+  const t = useTranslation();
   const done = isComplete(lessonId);
   const { prev, next } = getAdjacentLessons(sectionId, moduleId, lessonId);
 
@@ -56,7 +58,7 @@ export default function LessonPage({ params }: Props) {
             </span>
             {lesson.prerequisites && lesson.prerequisites.length > 0 && (
               <span className="text-xs text-slate-400">
-                Prereqs: {lesson.prerequisites.join(', ')}
+                {t.lesson.prereqs} {lesson.prerequisites.join(', ')}
               </span>
             )}
           </div>
@@ -69,7 +71,7 @@ export default function LessonPage({ params }: Props) {
           {/* Detail mode notice */}
           {detailMode === 'simple' && (
             <div className="mt-4 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
-              Simple mode is on — some advanced content may be condensed.
+              {t.lesson.simpleMode}
             </div>
           )}
 
@@ -94,7 +96,7 @@ export default function LessonPage({ params }: Props) {
             )}
           >
             <CheckCircle2 className="w-5 h-5" />
-            {done ? 'Mark as Incomplete' : 'Mark as Complete'}
+            {done ? t.lesson.markIncomplete : t.lesson.markComplete}
           </button>
         </div>
 
@@ -107,7 +109,7 @@ export default function LessonPage({ params }: Props) {
             >
               <ArrowLeft className="w-4 h-4 text-slate-400 group-hover:text-brand-500 transition-colors shrink-0" />
               <div className="min-w-0">
-                <p className="text-xs text-slate-400 mb-0.5">Previous</p>
+                <p className="text-xs text-slate-400 mb-0.5">{t.lesson.previous}</p>
                 <p className="text-sm font-semibold text-slate-700 group-hover:text-brand-700 truncate">
                   {prev.lesson.title}
                 </p>
@@ -121,7 +123,7 @@ export default function LessonPage({ params }: Props) {
               className="group flex items-center justify-end gap-3 bg-white border border-slate-200 rounded-2xl px-5 py-4 hover:border-brand-300 hover:shadow-soft transition-all text-right col-start-2"
             >
               <div className="min-w-0">
-                <p className="text-xs text-slate-400 mb-0.5">Next</p>
+                <p className="text-xs text-slate-400 mb-0.5">{t.lesson.next}</p>
                 <p className="text-sm font-semibold text-slate-700 group-hover:text-brand-700 truncate">
                   {next.lesson.title}
                 </p>

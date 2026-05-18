@@ -13,6 +13,7 @@ import { NotebookSidebar } from '@/components/notebook/NotebookSidebar';
 import { NotebookCell } from '@/components/notebook/NotebookCell';
 import { getNotebookById } from '@/data/notebooks';
 import { useNotebookStore } from '@/store/notebookStore';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { NotebookCategoryId, Difficulty } from '@/types/notebook';
 
 const DIFFICULTY_STYLES: Record<Difficulty, string> = {
@@ -40,6 +41,7 @@ export default function NotebookPage({ params }: PageProps) {
 
   const { notebook, category } = result;
   const { completedNotebooks, bookmarkedNotebooks, markComplete, markIncomplete, toggleBookmark, setLastVisited } = useNotebookStore();
+  const t = useTranslation();
 
   const isDone       = completedNotebooks.includes(notebook.id);
   const isBookmarked = bookmarkedNotebooks.includes(notebook.id);
@@ -85,7 +87,7 @@ export default function NotebookPage({ params }: PageProps) {
                 className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-700 mb-4 transition-colors"
               >
                 <ArrowLeft className="w-3 h-3" />
-                Back to {category.title}
+                {t.handsOn.notebook.backTo(category.title)}
               </Link>
 
               <div className="flex items-start justify-between gap-4 mb-4">
@@ -111,7 +113,7 @@ export default function NotebookPage({ params }: PageProps) {
                         ? 'bg-amber-50 border-amber-200 text-amber-600'
                         : 'bg-white border-slate-200 text-slate-400 hover:text-amber-500 hover:border-amber-200'
                     )}
-                    title={isBookmarked ? 'Remove bookmark' : 'Bookmark'}
+                    title={isBookmarked ? (t.common.completed) : t.common.open}
                   >
                     {isBookmarked
                       ? <BookmarkCheck className="w-4 h-4" />
@@ -129,7 +131,7 @@ export default function NotebookPage({ params }: PageProps) {
                     )}
                   >
                     <CheckCircle2 className={clsx('w-4 h-4', isDone ? 'text-emerald-500' : 'text-slate-400')} />
-                    {isDone ? 'Completed' : 'Mark Complete'}
+                    {isDone ? t.handsOn.notebook.completed : t.handsOn.notebook.markComplete}
                   </button>
                 </div>
               </div>
@@ -164,7 +166,7 @@ export default function NotebookPage({ params }: PageProps) {
               {notebook.prerequisites && notebook.prerequisites.length > 0 && (
                 <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl">
                   <p className="text-xs text-amber-800">
-                    <strong>Prerequisites:</strong>{' '}
+                    <strong>{t.handsOn.notebook.prerequisites}</strong>{' '}
                     {notebook.prerequisites.map((p, i) => (
                       <span key={p}>
                         {i > 0 && ', '}
@@ -193,17 +195,17 @@ export default function NotebookPage({ params }: PageProps) {
               {isDone ? (
                 <>
                   <CheckCircle2 className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-                  <h3 className="text-lg font-bold text-emerald-800 mb-1">Notebook Complete! 🎉</h3>
-                  <p className="text-sm text-emerald-700">Great work. Move on to the next notebook or explore related topics.</p>
+                  <h3 className="text-lg font-bold text-emerald-800 mb-1">{t.handsOn.notebook.notebookComplete}</h3>
+                  <p className="text-sm text-emerald-700">{t.handsOn.notebook.notebookCompletedDesc}</p>
                 </>
               ) : (
                 <>
-                  <h3 className="text-lg font-bold text-slate-800 mb-2">Done with this notebook?</h3>
+                  <h3 className="text-lg font-bold text-slate-800 mb-2">{t.handsOn.notebook.doneQuestion}</h3>
                   <button
                     onClick={() => markComplete(notebook.id)}
                     className="inline-flex items-center gap-2 bg-emerald-600 text-white font-semibold px-6 py-3 rounded-xl hover:bg-emerald-700 transition-colors"
                   >
-                    <CheckCircle2 className="w-4 h-4" /> Mark as Complete
+                    <CheckCircle2 className="w-4 h-4" /> {t.handsOn.notebook.markAsComplete}
                   </button>
                 </>
               )}
@@ -218,7 +220,7 @@ export default function NotebookPage({ params }: PageProps) {
                 >
                   <ChevronLeft className="w-5 h-5 text-slate-400 shrink-0" />
                   <div className="text-left min-w-0">
-                    <div className="text-xs text-slate-400 mb-0.5">Previous</div>
+                    <div className="text-xs text-slate-400 mb-0.5">{t.handsOn.notebook.previous}</div>
                     <div className="text-sm font-semibold text-slate-700 truncate group-hover:text-brand-600">
                       {prevNotebook.title}
                     </div>
@@ -232,7 +234,7 @@ export default function NotebookPage({ params }: PageProps) {
                   className="flex items-center justify-end gap-3 bg-white border border-slate-200 rounded-xl p-4 hover:bg-slate-50 hover:shadow-soft transition-all group"
                 >
                   <div className="text-right min-w-0">
-                    <div className="text-xs text-slate-400 mb-0.5">Next</div>
+                    <div className="text-xs text-slate-400 mb-0.5">{t.handsOn.notebook.next}</div>
                     <div className="text-sm font-semibold text-slate-700 truncate group-hover:text-brand-600">
                       {nextNotebook.title}
                     </div>
@@ -245,7 +247,7 @@ export default function NotebookPage({ params }: PageProps) {
             {/* Related notebooks */}
             {notebook.relatedNotebooks && notebook.relatedNotebooks.length > 0 && (
               <div className="mt-8">
-                <h3 className="text-sm font-bold text-slate-700 mb-3">Related Notebooks</h3>
+                <h3 className="text-sm font-bold text-slate-700 mb-3">{t.handsOn.notebook.relatedNotebooks}</h3>
                 <div className="flex flex-wrap gap-2">
                   {notebook.relatedNotebooks.map(rid => {
                     const rel = getNotebookById(rid);

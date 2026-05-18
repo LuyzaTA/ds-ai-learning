@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { CheckCircle2, XCircle, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { QuizCell as QuizCellType } from '@/types/notebook';
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function QuizCell({ cell }: Props) {
+  const t = useTranslation();
   const [selected, setSelected] = useState<(number | null)[]>(
     cell.questions.map(() => null)
   );
@@ -45,15 +47,15 @@ export function QuizCell({ cell }: Props) {
       <div className="flex items-center justify-between px-5 py-3 border-b border-brand-100 bg-brand-100/50">
         <div className="flex items-center gap-2">
           <HelpCircle className="w-4 h-4 text-brand-600" />
-          <span className="text-sm font-bold text-brand-800">{cell.title ?? 'Knowledge Check'}</span>
-          <span className="text-xs text-brand-500">({total} questions)</span>
+          <span className="text-sm font-bold text-brand-800">{cell.title ?? t.cells.quiz.knowledgeCheck}</span>
+          <span className="text-xs text-brand-500">({total} {t.cells.quiz.questions})</span>
         </div>
         {submitted.every(Boolean) && (
           <span className={clsx(
             'text-xs font-bold px-2.5 py-1 rounded-full',
             score === total ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
           )}>
-            {score}/{total} correct
+            {score}/{total} {t.cells.quiz.correct}
           </span>
         )}
       </div>
@@ -127,14 +129,14 @@ export function QuizCell({ cell }: Props) {
                         : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                     )}
                   >
-                    Check Answer
+                    {t.cells.quiz.checkAnswer}
                   </button>
                 ) : (
                   <button
                     onClick={() => handleReset(qi)}
                     className="px-4 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors"
                   >
-                    Try Again
+                    {t.cells.quiz.tryAgain}
                   </button>
                 )}
 
@@ -146,7 +148,7 @@ export function QuizCell({ cell }: Props) {
                     className="flex items-center gap-1 text-xs text-slate-500 hover:text-slate-700"
                   >
                     {showExplanation[qi] ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
-                    Explanation
+                    {t.cells.quiz.explanation}
                   </button>
                 )}
               </div>
@@ -156,7 +158,7 @@ export function QuizCell({ cell }: Props) {
                   'mt-3 p-3 rounded-lg text-xs leading-relaxed',
                   isCorrect ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'
                 )}>
-                  <strong>{isCorrect ? '✓ Correct! ' : '✗ Not quite. '}</strong>
+                  <strong>{isCorrect ? t.cells.quiz.correctFeedback : t.cells.quiz.incorrectFeedback}</strong>
                   {q.explanation}
                 </div>
               )}

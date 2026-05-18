@@ -7,6 +7,7 @@ import { ChevronRight, CheckCircle2, BookOpen, X, FlaskConical } from 'lucide-re
 import { clsx } from 'clsx';
 import { curriculum } from '@/data/curriculum';
 import { useProgressStore } from '@/store/progressStore';
+import { useTranslation } from '@/hooks/useTranslation';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import type { SectionColor } from '@/types/curriculum';
 import { COLOR_MAP } from '@/types/curriculum';
@@ -25,6 +26,7 @@ const SECTION_COLORS: Record<SectionColor, string> = {
 export function Sidebar() {
   const pathname = usePathname();
   const { completedLessons, sidebarOpen, toggleSidebar } = useProgressStore();
+  const t = useTranslation();
   const [openSections, setOpenSections] = useState<Set<string>>(new Set(['foundations']));
 
   const toggleSection = (id: string) => {
@@ -81,14 +83,14 @@ export function Sidebar() {
           >
             <FlaskConical className={clsx('w-5 h-5', pathname?.startsWith('/hands-on') ? 'text-violet-600' : 'text-slate-500')} />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold truncate">Hands-On</p>
-              <p className="text-xs text-slate-400">Interactive Notebooks</p>
+              <p className="text-sm font-semibold truncate">{t.nav.handsOn}</p>
+              <p className="text-xs text-slate-400">{t.nav.interactiveNotebooks}</p>
             </div>
-            <span className="text-xs bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded-full font-semibold">NEW</span>
+            <span className="text-xs bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded-full font-semibold">{t.common.new}</span>
           </Link>
 
           <div className="mx-3 my-2 border-t border-slate-100" />
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Curriculum</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">{t.nav.curriculum}</p>
 
           {curriculum.sections.map((section) => {
             const sectionLessons = section.modules.flatMap((m) => m.lessons);
@@ -108,7 +110,7 @@ export function Sidebar() {
                   <span className="text-lg leading-none">{section.icon}</span>
                   <div className="flex-1 text-left min-w-0">
                     <p className="text-sm font-semibold text-slate-700 truncate">{section.title}</p>
-                    <p className="text-xs text-slate-400">{completed}/{total} lessons</p>
+                    <p className="text-xs text-slate-400">{t.nav.lessonsCount(completed, total)}</p>
                   </div>
                   <ChevronRight
                     className={clsx(
@@ -176,8 +178,8 @@ export function Sidebar() {
         {/* Overall progress */}
         <div className="border-t border-slate-100 px-5 py-4">
           <div className="flex justify-between text-xs text-slate-500 mb-1.5">
-            <span>Overall Progress</span>
-            <span>{completedLessons.length} completed</span>
+            <span>{t.nav.overallProgress}</span>
+            <span>{t.nav.lessonsCompleted(completedLessons.length)}</span>
           </div>
           <ProgressBar
             value={completedLessons.length}

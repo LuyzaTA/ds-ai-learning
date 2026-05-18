@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Copy, Check, Play, Square, ChevronDown, ChevronUp } from 'lucide-react';
 import { clsx } from 'clsx';
+import { useTranslation } from '@/hooks/useTranslation';
 import type { CodeCell as CodeCellType } from '@/types/notebook';
 
 const LANG_COLORS: Record<string, string> = {
@@ -50,6 +51,7 @@ export function CodeCell({ cell, index }: CodeCellProps) {
   const [running, setRunning] = useState(false);
   const [showOutput, setShowOutput] = useState(!!cell.output);
   const [hasRun, setHasRun] = useState(false);
+  const t = useTranslation();
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(cell.code);
@@ -94,7 +96,7 @@ export function CodeCell({ cell, index }: CodeCellProps) {
           <button
             onClick={handleCopy}
             className="p-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-700 transition-colors"
-            title="Copy code"
+            title={t.cells.code.copy}
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
           </button>
@@ -112,9 +114,9 @@ export function CodeCell({ cell, index }: CodeCellProps) {
               )}
             >
               {running ? (
-                <><Square className="w-3 h-3 animate-pulse" /> Running...</>
+                <><Square className="w-3 h-3 animate-pulse" /> {t.cells.code.running}</>
               ) : (
-                <><Play className="w-3 h-3" /> Run</>
+                <><Play className="w-3 h-3" /> {t.cells.code.run}</>
               )}
             </button>
           )}
@@ -154,7 +156,7 @@ export function CodeCell({ cell, index }: CodeCellProps) {
                 />
               ))}
             </div>
-            Executing...
+            {t.cells.code.executing}
           </div>
         </div>
       )}
@@ -167,7 +169,7 @@ export function CodeCell({ cell, index }: CodeCellProps) {
             className="w-full flex items-center justify-between px-4 py-2 bg-slate-900 text-xs text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors"
           >
             <span className="font-mono">
-              {hasRun ? '✓ Output' : 'Output'}
+              {hasRun ? `✓ ${t.cells.code.output}` : t.cells.code.output}
             </span>
             {showOutput ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           </button>
